@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build && electron-builder",
+    "vite-build": "tsc && vite build",
+    "build": " electron-builder",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
@@ -32,6 +33,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.53.0",
+    "react-router-dom": "^6.27.0",
     "tailwind-merge": "^2.5.4",
     "tailwindcss-animate": "^1.0.7",
     "vaul": "^1.1.0",
@@ -59,6 +61,21 @@
   },
   "main": "dist-electron/main.js",
   "build": {
+    "files": [
+      "dist/",
+      "dist-electron/",
+      "preload.mjs"
+    ],
+    "extraResources": [
+      {
+        "from": "preload.mjs",
+        "to": "preload.mjs"
+      }
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "build/icon.ico"
+    },
     "extraMetadata": {
       "build": {
         "npmRebuild": false
