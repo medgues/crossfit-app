@@ -1,24 +1,18 @@
 import { useState } from "react";
 import reactLogo from "../assets/react.svg";
 import viteLogo from "/electron-vite.animate.svg";
+import { Link } from "react-router-dom";
 
 const DefaultPage = () => {
   const [count, setCount] = useState(0);
-  const openNewTab = () => {
-    // Send the message to open a new tab with a specific route
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (window as any).electron.ipcRenderer.send(
-      "open-new-tab",
-      "http://localhost:5173/about"
-    ); // Change to the appropriate URL in production
-  };
 
   return (
     <>
       <div>
-        <a href="/about" target="_blank">
+        <Link to="/about" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
+        </Link>
+
         <a href="localhost:5173" target="_blank">
           <img src={reactLogo} className="logo react" alt="React logo" />
         </a>
@@ -28,7 +22,6 @@ const DefaultPage = () => {
         <button onClick={() => setCount((count) => count + 1)}>
           count is {count}
         </button>
-        <button onClick={openNewTab}>Open New Tab</button>
 
         <p>
           Edit <code>src/App.tsx</code> and save to test HMR

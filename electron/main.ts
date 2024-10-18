@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { app, BrowserWindow } from "electron";
+import { app, BrowserWindow, ipcMain } from "electron";
 // import { createRequire } from 'node:module'
 import { fileURLToPath } from "node:url";
 import path from "node:path";
@@ -69,16 +69,5 @@ app.on("activate", () => {
   }
 });
 
-// app.whenReady().then(createWindow);
-// // Listen for a request to open a new tab
-// ipcMain.on("open-new-tab", (_event, url) => {
-//   const newWindow = new BrowserWindow({
-//     icon: path.join(process.env.VITE_PUBLIC, "electron-vite.svg"),
-//     webPreferences: {
-//       preload: path.join(__dirname, "preload.mjs"),
-//       contextIsolation: true,
-//     },
-//   });
-
-//   newWindow.loadURL(url);
-// });
+app.whenReady().then(createWindow);
+// Listen for a request to open a new tab

@@ -24,11 +24,3 @@ contextBridge.exposeInMainWorld("ipcRenderer", {
   // You can expose other APTs you need here.
   // ...
 });
-
-// contextBridge.exposeInMainWorld("electron", {
-//   ipcRenderer: {
-//     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-//     send: (channel: string, data: any) => ipcRenderer.send(channel, data),
-//     // Add other ipcRenderer methods if needed
-//   },
-// });
