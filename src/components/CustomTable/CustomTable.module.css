@@ -1,0 +1,28 @@
+.header {
+  background-color: var(--background-light);
+}
+
+.rowBg {
+  background-color: var(--mantin-color-neutral_N75);
+  cursor: pointer;
+}
+
+.row:hover {
+  background-color: var(--background-lighter);
+}
+
+.selectedRow {
+  background-color: var(--B100);
+}
+
+.relative {
+  position: relative;
+}
+
+.absolute {
+  position: absolute;
+}
+
+.header {
+  font-size: 10px;
+}

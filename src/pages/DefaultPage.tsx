@@ -2,9 +2,10 @@ import viteLogo from "/electron-vite.animate.svg";
 import { Link } from "react-router-dom";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
-import TimerBar from "@/components/ui/timerUi/timerBar";
+// import TimerBar from "@/components/ui/timerUi/timerBar";
 import { useTimerStore } from "@/stores/useTimerStore";
 import { useEffect } from "react";
+import TimerBar from "@/components/ui/timerUi/TimerBar";
 
 dayjs.extend(duration);
 
@@ -54,7 +55,7 @@ const DefaultPage = () => {
     state?.setTimerStatus("pause");
   };
   return (
-    <div className="flex">
+    <div className="flex w-full">
       <div>
         <Link to="/about" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />

@@ -1,7 +1,19 @@
-import { useTimerStore } from "@/stores/useTimerStore";
+// import { useTimerStore } from "@/stores/useTimerStore";
 import { useEffect } from "react";
 
-const TimerBar = ({ state }) => {
+interface TimerState {
+  totalTime: number;
+  segments: { duration: number; color: string; label: string }[];
+  remainingTime: number;
+  currentSegment: number;
+  segmentTime: number;
+  timerStatus: string;
+  setRemainingTime: (callback: (prevTime: number) => number) => void;
+  setSegmentTime: (callback: (prevTime: number) => number) => void;
+  setCurrentSegment: (segment: number) => void;
+}
+
+const TimerBar = ({ state }: { state: TimerState }) => {
   //   const {
   //     totalTime,
   //     segments,

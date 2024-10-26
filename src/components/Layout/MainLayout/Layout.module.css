@@ -1,0 +1,20 @@
+.flexContent {
+  height: 97%;
+  width: rem(300px);
+  margin: var(--mantine-spacing-md);
+  display: flex;
+  flex-direction: column;
+  background-color: var(--mantine-color-body);
+  border-radius: var(--mantine-radius-sm);
+  box-shadow: 0px 4px 16px 10px rgba(16, 44, 64, 0.04);
+}
+.container {
+  height: 92vh;
+  width: 100%;
+}
+.container > div {
+  height: 98vh;
+}
+.Navbar {
+  border-bottom: rem(1px) solid #e6ecf0;
+}
