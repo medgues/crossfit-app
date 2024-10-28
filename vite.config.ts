@@ -27,6 +27,11 @@ export default defineConfig({
           : {},
     }),
   ],
+  build: {
+    rollupOptions: {
+      external: ["firebase"],
+    },
+  },
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
