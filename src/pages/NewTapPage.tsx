@@ -1,15 +1,9 @@
-import { useEffect } from "react";
-import { useTimerStore } from "@/stores/useTimerStore";
+import TimerBar from "@/components/ui/timerUi/TimerBar";
 
 const NewTapPage = () => {
-  const state = useTimerStore();
-
-  useEffect(() => {
-    console.log("timerStatus from page", state);
-  }, [state]);
   return (
     <>
-      <div>DisplayPage</div>
+      <TimerBar />
     </>
   );
 };

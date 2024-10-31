@@ -12,7 +12,7 @@ const persistConfig = {
   // timeout: 0,
   storage: storageSession,
   // only persisted reducers
-  whitelist: ["authentication", "settings"],
+  // whitelist: ["authentication", "settings"],
 };
 
 const middleware = () => new Tuple(thunk, logger);

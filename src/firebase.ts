@@ -1,16 +1,22 @@
 import { initializeApp, getApps } from "firebase/app";
 import { getFirestore } from "firebase/firestore/lite";
+import {
+  VITE_FIREBASE_API_KEY,
+  VITE_FIREBASE_APP_ID,
+  VITE_FIREBASE_AUTH_DOMAIN,
+  VITE_FIREBASE_STORAGE_BUCKET,
+  VITE_FIREBASE_PROJECT_ID,
+  VITE_FIREBASE_MESSAGING_SENDER_ID,
+} from "./components/config/constants";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAX4SD3aO-MgOXaMdEpxq-kWlqx9O4yrKA",
-  authDomain: "dz-fit-games.firebaseapp.com",
-  projectId: "dz-fit-games",
-  storageBucket: "dz-fit-games.appspot.com",
-  messagingSenderId: "9962282549",
-  appId: "1:9962282549:web:7a0f32d14af5dc8a31db7c",
-  databaseURL: "https://dz-fit-games-default-rtdb.firebaseio.com",
+  apiKey: VITE_FIREBASE_API_KEY,
+  authDomain: VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: VITE_FIREBASE_PROJECT_ID,
+  storageBucket: VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: VITE_FIREBASE_APP_ID,
 };
-
 // Initialize Firebase only if it hasn't been initialized yet
 const app =
   getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];

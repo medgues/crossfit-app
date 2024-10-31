@@ -1,10 +1,15 @@
-import { Flex, Image } from "@mantine/core";
+import { Button, Flex, Image } from "@mantine/core";
 import { FC, useState } from "react";
 import Iconsax from "../Iconsax";
 import logo from "../../assets/logo.png";
-import { ROUTE_CHALLENGERS, ROUTE_TEAMS } from "../config/constants";
+import {
+  ROUTE_CHALLENGERS,
+  ROUTE_SCOREBOARD,
+  ROUTE_TEAMS,
+} from "../config/constants";
 import classes from "./navbar.module.css";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import TimerControle from "../ui/timerUi/TimerControle";
 
 // import {
 //   useAppDispatch,
@@ -43,19 +48,6 @@ const AppBar: FC = () => {
     },
   ];
 
-  // const dispatch = useAppDispatch();
-  // const matches = useMediaQuery("(max-width: 900px)");
-  // useEffect(() => {
-  //   if (matches) {
-  //     close();
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [matches]);
-
-  // const logout = useCallback(() => {
-  //   // dispatch(ResetAuthentication());
-  // }, [dispatch]);
-
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const [active, setActive] = useState(pathname);
@@ -74,13 +66,6 @@ const AppBar: FC = () => {
       <span>{item.label}</span>
     </a>
   ));
-  // const [opened, { open, close }] = useDisclosure(false);
-  // const dispatch = useAppDispatch()
-  // const [loading, setLoading] = useState<boolean>(false);
-
-  // const { account } = useAppSelector((state) => state.authentication)
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
 
   return (
     <Flex
@@ -115,6 +100,17 @@ const AppBar: FC = () => {
           {links}
         </Flex>
       </Flex>
+      <TimerControle />
+      <Button
+        variant="primary"
+        component="a"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <Link to={ROUTE_SCOREBOARD} target="_blank" rel="noopener noreferrer">
+          Open scoreboard
+        </Link>
+      </Button>
     </Flex>
   );
 };

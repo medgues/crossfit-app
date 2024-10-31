@@ -5,17 +5,19 @@ import CustomSelect from "../CustomSelect";
 import {
   ChallengersType,
   ReqAddChallenger,
+  ReqUpdateChallenger,
 } from "@/state/reducers/challengers";
 import { useForm, UseFormReturnType } from "@mantine/form";
 import CustomTextInput from "../CustomTextInput/CustomTextInput";
 import { useAppDispatch } from "@/state/redux-hooks";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CustomNumberInput from "../CustomNumberInput";
 
 export type ChallengersFromType = {
   close: () => void;
   formToShow: string;
   selectedChallenger?: ChallengersType;
+  setCurrentPage?: (page: number) => void;
 };
 
 const ChallengersForm = ({
@@ -24,26 +26,24 @@ const ChallengersForm = ({
   selectedChallenger,
 }: ChallengersFromType) => {
   const dispatch = useAppDispatch();
+
   console.log("selectedChallenger", selectedChallenger);
 
-  const initialValues: ChallengersType = {
-    id: "0",
-    name: "",
-    avatar: "",
-    nationality: "",
-    category: "",
-    division: "",
-    heatNo: "0",
-    E1: "",
-    E2: "",
-    E3: "",
-    E4: "",
-    E5: "",
-    E6: "",
-  };
   const form: UseFormReturnType<ChallengersType> = useForm<ChallengersType>({
-    initialValues,
-
+    initialValues: {
+      name: "",
+      avatar: "",
+      nationality: "",
+      category: "",
+      division: "",
+      heatNo: "-",
+      E1: "-",
+      E2: "-",
+      E3: "-",
+      E4: "-",
+      E5: "-",
+      E6: "-",
+    },
     validate: {},
   });
 
@@ -105,11 +105,25 @@ const ChallengersForm = ({
       label: "female +45",
     },
   ];
-
-  const handleFormSubmit = async (values: ChallengersType) => {
+  const addChallenger = async (values: ChallengersType) => {
     setLoading(true);
     try {
       await dispatch(ReqAddChallenger(values));
+      form.reset();
+      close();
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const updateChallenger = async (values: ChallengersType) => {
+    console.log("pdate values", values);
+    setLoading(true);
+    try {
+      if (!selectedChallenger?.id) {
+        throw new Error("No challenger ID found");
+      }
+      await dispatch(ReqUpdateChallenger(selectedChallenger.id, values));
       console.log("values", values);
       form.reset();
       close();
@@ -117,6 +131,29 @@ const ChallengersForm = ({
       setLoading(false);
     }
   };
+
+  const handleFormSubmit =
+    formToShow === "add" ? addChallenger : updateChallenger;
+
+  useEffect(() => {
+    if (selectedChallenger) {
+      form.setValues({
+        name: selectedChallenger.name,
+        avatar: selectedChallenger.avatar,
+        nationality: selectedChallenger.nationality,
+        category: selectedChallenger.category,
+        division: selectedChallenger.division,
+        heatNo: selectedChallenger.heatNo,
+        E1: selectedChallenger.E1 || "-",
+        E2: selectedChallenger.E2 || "-",
+        E3: selectedChallenger.E3 || "-",
+        E4: selectedChallenger.E4 || "-",
+        E5: selectedChallenger.E5 || "-",
+        E6: selectedChallenger.E6 || "-",
+      });
+    }
+  }, [selectedChallenger]);
+
   return (
     <Modal.Content className="left-0 bottom-0">
       <Modal.Header>
@@ -171,10 +208,7 @@ const ChallengersForm = ({
                   placeholder="Name"
                   label="Full name"
                   {...form.getInputProps("name")}
-                  value={selectedChallenger?.name}
-                  // onStopTyping={debouncedSearch}
-                  // width={width}
-                  // height={height}
+                  value={form.values?.name}
                 />
                 <CustomTextInput
                   size="lg"
@@ -183,11 +217,7 @@ const ChallengersForm = ({
                   placeholder="Name"
                   label="Nationality"
                   {...form.getInputProps("nationality")}
-                  value={selectedChallenger?.nationality}
-
-                  // onStopTyping={debouncedSearch}
-                  // width={width}
-                  // height={height}
+                  value={form.values?.nationality}
                 />
               </Flex>
             </Flex>
