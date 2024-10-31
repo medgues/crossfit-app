@@ -1,45 +1,75 @@
-// import { useTimerStore } from "@/stores/useTimerStore";
+import {
+  setCurrentSegment,
+  setRemainingTime,
+  setSegmentTime,
+} from "@/state/reducers/timer";
+import { useAppSelector } from "@/state/redux-hooks";
+import { useAppDispatch } from "@/state/redux-hooks";
 import { useEffect } from "react";
 
-interface TimerState {
-  totalTime: number;
-  segments: { duration: number; color: string; label: string }[];
-  remainingTime: number;
-  currentSegment: number;
-  segmentTime: number;
-  timerStatus: string;
-  setRemainingTime: (callback: (prevTime: number) => number) => void;
-  setSegmentTime: (callback: (prevTime: number) => number) => void;
-  setCurrentSegment: (segment: number) => void;
-}
+const TimerBar = () => {
+  const {
+    currentSegment,
+    segments,
+    remainingTime,
+    segmentTime,
+    timerStatus,
+    totalTime,
+  } = useAppSelector((state) => state.timer);
+  const dispatch = useAppDispatch();
 
-const TimerBar = ({ state }: { state: TimerState }) => {
-  //   const {
-  //     totalTime,
-  //     segments,
-  //     remainingTime,
-  //     currentSegment,
-  //     segmentTime,
-  //     setRemainingTime,
-  //     setSegmentTime,
-  //     setCurrentSegment,
-  //     setTimerStatus
-  //   } = useTimerStore();
+  useEffect(() => {
+    if (timerStatus === "pause") return;
 
+    if (timerStatus === "running") {
+      const timer = setInterval(() => {
+        // Handle remaining time
+        if (remainingTime <= 0) {
+          clearInterval(timer);
+          dispatch(setRemainingTime(0));
+        } else {
+          dispatch(setRemainingTime(remainingTime - 1));
+        }
+
+        // Handle segment time
+        if (segmentTime <= 1) {
+          const nextSegment = (currentSegment - 1) % segments.length;
+          dispatch(setCurrentSegment(nextSegment));
+          dispatch(setSegmentTime(segments[nextSegment].duration));
+        } else {
+          dispatch(setSegmentTime(segmentTime - 1));
+        }
+      }, 1000);
+
+      return () => clearInterval(timer);
+    }
+  }, [
+    timerStatus,
+    currentSegment,
+    dispatch,
+    remainingTime,
+    segmentTime,
+    segments,
+  ]);
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const getSegmentHeight = (segmentTime: number) => {
-    return (segmentTime / state?.totalTime) * 100;
+    return (segmentTime / totalTime) * 100;
   };
 
   const getRemainingHeight = (segmentIndex: number) => {
-    if (segmentIndex > state?.currentSegment) {
+    if (segmentIndex > currentSegment) {
       return 0;
-    } else if (segmentIndex < state?.currentSegment) {
+    } else if (segmentIndex < currentSegment) {
       return 100;
     } else {
-      return (
-        (state?.segmentTime / state?.segments[state?.currentSegment].duration) *
-        100
+      console.log(
+        "remaining height",
+        segmentTime,
+        segments[currentSegment].duration
       );
+      console.log("currentSegment ", currentSegment);
+      return (segmentTime / segments[currentSegment].duration) * 100;
     }
   };
 
@@ -50,44 +80,16 @@ const TimerBar = ({ state }: { state: TimerState }) => {
   };
 
   const getArrowPosition = () => {
-    const progress = 1 - state?.remainingTime / state?.totalTime;
+    const progress = 1 - remainingTime / totalTime;
     return `${progress * 100}%`;
   };
 
-  useEffect(() => {
-    console.log("timerStatus", state?.timerStatus);
-
-    if (state?.timerStatus === "pause") return;
-    else if (state?.timerStatus === "running") {
-      const timer = setInterval(() => {
-        state?.setRemainingTime((prevTime: number) => {
-          if (prevTime <= 0) {
-            clearInterval(timer);
-            return 0;
-          }
-          return prevTime - 1;
-        });
-
-        state?.setSegmentTime((prevTime: number) => {
-          if (prevTime <= 1) {
-            const nextSegment =
-              (state?.currentSegment - 1) % state?.segments.length;
-            state?.setCurrentSegment(nextSegment);
-            return state?.segments[nextSegment].duration;
-          }
-          return prevTime - 1;
-        });
-      }, 1000);
-      return () => clearInterval(timer);
-    }
-  }, [state?.currentSegment, state?.timerStatus]);
-
   return (
-    <div className="flex">
-      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+    <div className="flex justify-center items-center">
+      <div className="flex flex-col items-center justify-center ">
         <div className="relative flex items-center">
           <div className="w-12 h-96 bg-gray-200 rounded-lg overflow-hidden relative">
-            {state?.segments.map((segment, index) => (
+            {segments.map((segment, index) => (
               <div
                 key={index}
                 id={`index-${index}`}
@@ -98,7 +100,7 @@ const TimerBar = ({ state }: { state: TimerState }) => {
                 }  border-slate-900`}
                 style={{
                   height: `${getSegmentHeight(segment.duration)}%`,
-                  bottom: `${state?.segments
+                  bottom: `${segments
                     .slice(0, index)
                     .reduce(
                       (acc, seg) => acc + getSegmentHeight(seg.duration),
@@ -116,7 +118,7 @@ const TimerBar = ({ state }: { state: TimerState }) => {
               </div>
             ))}
           </div>
-          <div className="w-16 h-96 relative">
+          <div className="w-2 h-96 relative">
             <div className="absolute top-0 bottom-0 left-1/4 w-0.5 bg-gray-300" />
             <div
               className="absolute left-0 w-full h-16 flex items-center justify-start transition-all duration-1000"
@@ -127,7 +129,7 @@ const TimerBar = ({ state }: { state: TimerState }) => {
           </div>
         </div>
         <div className="mt-4 text-2xl font-semibold">
-          {formatTime(state?.segmentTime)}
+          {formatTime(segmentTime)}
         </div>
       </div>
     </div>

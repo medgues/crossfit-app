@@ -7,7 +7,7 @@ import AppBar from "../../Navigation/AppBar";
 
 const MainLayout = () => {
   return (
-    <Container fluid my="md" className={classes.container}>
+    <Container fluid className={classes.container}>
       <Grid className={classes.container}>
         <Grid.Col span="auto">
           <Flex

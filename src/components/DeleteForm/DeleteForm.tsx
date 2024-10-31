@@ -1,7 +1,32 @@
 import { Button, Flex, Image, Modal, Text } from "@mantine/core";
 import deleteLogo from "../../assets/delete.png";
+import {
+  ChallengersType,
+  ReqDeleteChallenger,
+} from "@/state/reducers/challengers";
+import { useState } from "react";
+import { useAppDispatch } from "@/state/redux-hooks";
 
-const DeleteForm = () => {
+const DeleteForm = ({
+  selectedChallenger,
+  close,
+}: {
+  selectedChallenger?: ChallengersType;
+  close: () => void;
+}) => {
+  const [loading, setLoading] = useState(false);
+  const dispatch = useAppDispatch();
+  const handleDelete = async (id: string) => {
+    setLoading(true);
+    try {
+      if (id) {
+        dispatch(ReqDeleteChallenger(id));
+      }
+    } finally {
+      close();
+      setLoading(false);
+    }
+  };
   return (
     <Modal.Content className="left-0 bottom-0">
       <Modal.Header>
@@ -39,6 +64,7 @@ const DeleteForm = () => {
               variant="filled"
               className="self-end"
               type="submit"
+              disabled={loading}
             >
               No, keep it
             </Button>
@@ -48,6 +74,12 @@ const DeleteForm = () => {
               variant="filled"
               className="self-end"
               type="submit"
+              disabled={loading}
+              onClick={() =>
+                handleDelete(
+                  selectedChallenger?.id ? selectedChallenger.id : ""
+                )
+              }
             >
               Yes, delete
             </Button>
