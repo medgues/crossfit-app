@@ -175,7 +175,7 @@ const Challengers = () => {
     {
       Header: "Stats",
       accessor: "states",
-      render: (data, row) => {
+      render: (_data, row) => {
         return (
           <div className="text-sm text-gray-600">
             E1: {row.E1}kg · E2: {row.E2}kg · E3: {row.E3}kg · E4: {row.E4}kg ·

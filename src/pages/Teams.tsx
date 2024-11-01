@@ -7,13 +7,9 @@ import { Flex, Modal } from "@mantine/core";
 import { useCallback, useEffect, useState } from "react";
 import { debounce } from "lodash";
 import { useDisclosure } from "@mantine/hooks";
-import ChallengersForm from "@/components/ChallengersForm/ChallengersForm";
 import { useAppDispatch, useAppSelector } from "@/state/redux-hooks";
 import DeleteForm from "@/components/DeleteForm/DeleteForm";
 import {
-  ReqChallengerLastPatch,
-  ReqChallengersNextPatch,
-  ReqDeleteChallenger,
   ReqFetchChallengerFirstPatch,
   ReqFetchSearchChallengers,
 } from "@/state/reducers/challengers";
@@ -162,7 +158,7 @@ const Teams = () => {
     {
       Header: "Stats",
       accessor: "states",
-      render: (data, row) => {
+      render: (_data, row) => {
         return (
           <div className="text-sm text-gray-600">
             E1: {row.E1}kg · E2: {row.E2}kg
