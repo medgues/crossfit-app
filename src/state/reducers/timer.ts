@@ -117,7 +117,7 @@ export const previousTimer = createTimerThunk((dispatch, getState) => {
   const newSegment = state.timer.currentSegment + 1;
   dispatch(setCurrentSegment(newSegment));
   dispatch(setSegmentTime(state.timer.segments[newSegment].duration));
-  dispatch(resetCurrentTimer()); // This will call the thunk
+  dispatch(resetCurrentTimer() as any); // This will call the thunk
   dispatch(setTimerStatus("pause"));
 });
 
@@ -128,7 +128,7 @@ export const nextTimer = createTimerThunk((dispatch, getState) => {
   const newSegment = state.timer.currentSegment - 1;
   dispatch(setCurrentSegment(newSegment));
   dispatch(setSegmentTime(state.timer.segments[newSegment].duration));
-  dispatch(resetCurrentTimer()); // This will call the thunk
+  dispatch(resetCurrentTimer() as any); // This will call the thunk
   dispatch(setTimerStatus("pause"));
 });
 

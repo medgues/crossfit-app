@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import CustomTable, { Column } from "@/components/CustomTable/CustomTable";
 import Iconsax from "@/components/Iconsax";
@@ -10,33 +11,21 @@ import ChallengersForm from "@/components/ChallengersForm/ChallengersForm";
 import { useAppDispatch, useAppSelector } from "@/state/redux-hooks";
 import DeleteForm from "@/components/DeleteForm/DeleteForm";
 import {
+  ChallengersType,
   ReqChallengerLastPatch,
   ReqChallengersNextPatch,
+  ReqDeleteChallenger,
   ReqFetchChallengerFirstPatch,
   ReqFetchSearchChallengers,
 } from "@/state/reducers/challengers";
 import TimerBar from "@/components/ui/timerUi/TimerBar";
 
-type Challenger = {
-  name: string;
-  avatar: string;
-  nationality: string;
-  category: string;
-  division: string;
-  heatNo: string;
-  E1?: string;
-  E2?: string;
-  E3?: string;
-  E4?: string;
-  E5?: string;
-  E6?: string;
-};
-
 const Challengers = () => {
   const dispatch = useAppDispatch();
 
   const [formToShow, setFormToShow] = useState(String);
-  const [selectedChallenger, setSelectedChallenger] = useState<Challenger>();
+  const [selectedChallenger, setSelectedChallenger] =
+    useState<ChallengersType>();
 
   const [opened, { open, close }] = useDisclosure(false);
   // const dispatch = useAppDispatch();
@@ -45,13 +34,13 @@ const Challengers = () => {
   //   const total = useAppSelector((state) => state.account?.total) || 0;
   const [loading, setLoading] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [itemsPerPage] = useState<number>(5);
+  const [itemsPerPage] = useState<number>(10);
   const [selection, setSelection] = useState<string[]>([]);
   const handleSearch = (searchTerm: string) => {
     if (searchTerm) {
       setLoading(true);
       try {
-        dispatch(ReqFetchSearchChallengers(searchTerm));
+        dispatch(ReqFetchSearchChallengers(searchTerm) as any);
       } finally {
         setLoading(false);
       }
@@ -60,7 +49,7 @@ const Challengers = () => {
     } else {
       setLoading(true);
       try {
-        dispatch(ReqFetchChallengerFirstPatch(itemsPerPage));
+        dispatch(ReqFetchChallengerFirstPatch(itemsPerPage) as any);
       } finally {
         setLoading(false);
       }
@@ -74,6 +63,19 @@ const Challengers = () => {
 
   const handleDelete = async (id: string) => {
     console.log("update clicked", id);
+
+    setLoading(true);
+    try {
+      if (selectedChallenger?.id) {
+        dispatch(ReqDeleteChallenger(selectedChallenger?.id) as any);
+      }
+    } finally {
+      close();
+      setLoading(false);
+    }
+  };
+
+  const handelOpenDeleteDrawer = (id: string) => {
     const chalengerToBeDeleted = challengersList.find(
       (challenger) => challenger.id === id
     );
@@ -98,7 +100,7 @@ const Challengers = () => {
     async function fetchData() {
       setLoading(true);
       try {
-        await dispatch(ReqFetchChallengerFirstPatch(itemsPerPage));
+        await dispatch(ReqFetchChallengerFirstPatch(itemsPerPage) as any);
       } finally {
         setLoading(false);
       }
@@ -113,7 +115,11 @@ const Challengers = () => {
       setLoading(true);
       try {
         await dispatch(
-          ReqChallengersNextPatch(nextPageCursor, itemsPerPage, currentPage)
+          ReqChallengersNextPatch(
+            nextPageCursor,
+            itemsPerPage,
+            currentPage
+          ) as any
         );
       } finally {
         setLoading(false);
@@ -124,7 +130,11 @@ const Challengers = () => {
       setLoading(true);
       try {
         await dispatch(
-          ReqChallengerLastPatch(lastPageCursor, itemsPerPage, currentPage)
+          ReqChallengerLastPatch(
+            lastPageCursor,
+            itemsPerPage,
+            currentPage
+          ) as any
         );
       } finally {
         setLoading(false);
@@ -165,7 +175,14 @@ const Challengers = () => {
     {
       Header: "Stats",
       accessor: "states",
-      // render: (role: string) => <p>badge</p>,
+      render: (data, row) => {
+        return (
+          <div className="text-sm text-gray-600">
+            E1: {row.E1}kg · E2: {row.E2}kg · E3: {row.E3}kg · E4: {row.E4}kg ·
+            E5: {row.E5}kg · E6: {row.E6}kg
+          </div>
+        );
+      },
     },
 
     {
@@ -181,7 +198,7 @@ const Challengers = () => {
           />
           <Iconsax
             name="Trash"
-            onClick={() => handleDelete(row)}
+            onClick={() => handelOpenDeleteDrawer(row)}
             size={24}
             color="#707579"
           />
@@ -252,7 +269,10 @@ const Challengers = () => {
           />
         )}
         {formToShow === "delete" && (
-          <DeleteForm selectedChallenger={selectedChallenger} close={close} />
+          <DeleteForm
+            selectedItem={selectedChallenger}
+            handleDelete={handleDelete}
+          />
         )}
       </Modal.Root>
     </main>

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Avatar, Button, Flex, Modal } from "@mantine/core";
 import Iconsax from "../Iconsax";
 import colors from "../config/colors";
@@ -10,7 +11,7 @@ import {
 import { useForm, UseFormReturnType } from "@mantine/form";
 import CustomTextInput from "../CustomTextInput/CustomTextInput";
 import { useAppDispatch } from "@/state/redux-hooks";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import CustomNumberInput from "../CustomNumberInput";
 
 export type ChallengersFromType = {
@@ -27,28 +28,24 @@ const ChallengersForm = ({
 }: ChallengersFromType) => {
   const dispatch = useAppDispatch();
 
-  console.log("selectedChallenger", selectedChallenger);
-
   const form: UseFormReturnType<ChallengersType> = useForm<ChallengersType>({
     initialValues: {
-      name: "",
-      avatar: "",
-      nationality: "",
-      category: "",
-      division: "",
-      heatNo: "-",
-      E1: "-",
-      E2: "-",
-      E3: "-",
-      E4: "-",
-      E5: "-",
-      E6: "-",
+      name: selectedChallenger?.name || "",
+      avatar: selectedChallenger?.avatar || "",
+      nationality: selectedChallenger?.nationality || "",
+      category: selectedChallenger?.category || "",
+      division: selectedChallenger?.division || "",
+      heatNo: selectedChallenger?.heatNo || "-",
+      E1: selectedChallenger?.E1 || "-",
+      E2: selectedChallenger?.E2 || "-",
+      E3: selectedChallenger?.E3 || "-",
+      E4: selectedChallenger?.E4 || "-",
+      E5: selectedChallenger?.E5 || "-",
+      E6: selectedChallenger?.E6 || "-",
     },
-    validate: {},
   });
 
   const [loading, setLoading] = useState(false);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
 
   const devisionsList = [
     {
@@ -108,7 +105,7 @@ const ChallengersForm = ({
   const addChallenger = async (values: ChallengersType) => {
     setLoading(true);
     try {
-      await dispatch(ReqAddChallenger(values));
+      await dispatch(ReqAddChallenger(values) as any);
       form.reset();
       close();
     } finally {
@@ -123,7 +120,7 @@ const ChallengersForm = ({
       if (!selectedChallenger?.id) {
         throw new Error("No challenger ID found");
       }
-      await dispatch(ReqUpdateChallenger(selectedChallenger.id, values));
+      await dispatch(ReqUpdateChallenger(selectedChallenger.id, values) as any);
       console.log("values", values);
       form.reset();
       close();
@@ -134,25 +131,6 @@ const ChallengersForm = ({
 
   const handleFormSubmit =
     formToShow === "add" ? addChallenger : updateChallenger;
-
-  useEffect(() => {
-    if (selectedChallenger) {
-      form.setValues({
-        name: selectedChallenger.name,
-        avatar: selectedChallenger.avatar,
-        nationality: selectedChallenger.nationality,
-        category: selectedChallenger.category,
-        division: selectedChallenger.division,
-        heatNo: selectedChallenger.heatNo,
-        E1: selectedChallenger.E1 || "-",
-        E2: selectedChallenger.E2 || "-",
-        E3: selectedChallenger.E3 || "-",
-        E4: selectedChallenger.E4 || "-",
-        E5: selectedChallenger.E5 || "-",
-        E6: selectedChallenger.E6 || "-",
-      });
-    }
-  }, [selectedChallenger]);
 
   return (
     <Modal.Content className="left-0 bottom-0">
@@ -185,7 +163,6 @@ const ChallengersForm = ({
                 gap="md"
                 direction="column"
                 w="30%"
-                // px={24}
                 mt={16}
               >
                 <Avatar src="avatar.png" alt="it's me" size="150px" />
@@ -208,7 +185,6 @@ const ChallengersForm = ({
                   placeholder="Name"
                   label="Full name"
                   {...form.getInputProps("name")}
-                  value={form.values?.name}
                 />
                 <CustomTextInput
                   size="lg"
@@ -217,7 +193,6 @@ const ChallengersForm = ({
                   placeholder="Name"
                   label="Nationality"
                   {...form.getInputProps("nationality")}
-                  value={form.values?.nationality}
                 />
               </Flex>
             </Flex>
@@ -251,9 +226,6 @@ const ChallengersForm = ({
                     />
                   }
                   {...form.getInputProps("category")}
-                  value={selectedChallenger?.category}
-
-                  // error={form.errors.role ? localize("Must chose a role") : ""}
                 />
                 <CustomSelect
                   placeholder="Select devision"
@@ -261,7 +233,6 @@ const ChallengersForm = ({
                   mb={16}
                   label="Devision"
                   selectdata={devisionsList}
-                  // value={challenger?.devision}
                   rightSection={
                     <Iconsax
                       name="ArrowDown2"
@@ -271,9 +242,6 @@ const ChallengersForm = ({
                     />
                   }
                   {...form.getInputProps("division")}
-                  value={selectedChallenger?.division}
-
-                  // error={form.errors.role ? localize("Must chose a role") : ""}
                 />
               </Flex>
               <Flex
@@ -289,7 +257,6 @@ const ChallengersForm = ({
                   w="50%"
                   mb={16}
                   label={"Team name"}
-                  // selectdata={transformedRoles(roles)}
                   rightSection={
                     <Iconsax
                       name="ArrowDown2"
@@ -299,16 +266,12 @@ const ChallengersForm = ({
                     />
                   }
                   {...form.getInputProps("teamName")}
-                  // value={selectedChallenger?.teamName}
-
-                  // error={form.errors.role ? localize("Must chose a role") : ""}
                 />
                 <CustomSelect
                   placeholder="Select Heat No"
                   w="50%"
                   mb={16}
                   label="Heat No"
-                  // selectdata={transformedRoles(roles)}
                   rightSection={
                     <Iconsax
                       name="ArrowDown2"
@@ -318,9 +281,6 @@ const ChallengersForm = ({
                     />
                   }
                   {...form.getInputProps("heatNo")}
-                  value={selectedChallenger?.heatNo}
-
-                  // error={form.errors.role ? localize("Must chose a role") : ""}
                 />
               </Flex>
             </Flex>
@@ -354,7 +314,6 @@ const ChallengersForm = ({
                       color: "#8FA3B2",
                     },
                   }}
-                  value={selectedChallenger?.E1}
                 />
                 <CustomNumberInput
                   size="lg"
@@ -368,7 +327,6 @@ const ChallengersForm = ({
                       color: "#8FA3B2",
                     },
                   }}
-                  value={selectedChallenger?.E2}
                 />
                 <CustomNumberInput
                   size="lg"
@@ -382,7 +340,6 @@ const ChallengersForm = ({
                       color: "#8FA3B2",
                     },
                   }}
-                  value={selectedChallenger?.E3}
                 />
                 <CustomNumberInput
                   size="lg"
@@ -396,7 +353,6 @@ const ChallengersForm = ({
                       color: "#8FA3B2",
                     },
                   }}
-                  value={selectedChallenger?.E4}
                 />
                 <CustomNumberInput
                   label="Event#5"
@@ -410,7 +366,6 @@ const ChallengersForm = ({
                       color: "#8FA3B2",
                     },
                   }}
-                  value={selectedChallenger?.E5}
                 />
                 <CustomNumberInput
                   label="Event#6"
@@ -424,7 +379,6 @@ const ChallengersForm = ({
                       color: "#8FA3B2",
                     },
                   }}
-                  value={selectedChallenger?.E6}
                 />
               </Flex>
             </Flex>

@@ -1,31 +1,22 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button, Flex, Image, Modal, Text } from "@mantine/core";
 import deleteLogo from "../../assets/delete.png";
-import {
-  ChallengersType,
-  ReqDeleteChallenger,
-} from "@/state/reducers/challengers";
+import { TeamType } from "@/state/reducers/teams";
+import { ChallengersType } from "@/state/reducers/challengers";
 import { useState } from "react";
-import { useAppDispatch } from "@/state/redux-hooks";
 
 const DeleteForm = ({
-  selectedChallenger,
-  close,
+  selectedItem,
+  handleDelete,
 }: {
-  selectedChallenger?: ChallengersType;
-  close: () => void;
+  selectedItem?: ChallengersType | TeamType;
+  handleDelete: (id: string) => void;
 }) => {
   const [loading, setLoading] = useState(false);
-  const dispatch = useAppDispatch();
-  const handleDelete = async (id: string) => {
+  const handleConfirmDelete = () => {
     setLoading(true);
-    try {
-      if (id) {
-        dispatch(ReqDeleteChallenger(id));
-      }
-    } finally {
-      close();
-      setLoading(false);
-    }
+    handleDelete(selectedItem?.id ? selectedItem.id : "");
+    setLoading(false);
   };
   return (
     <Modal.Content className="left-0 bottom-0">
@@ -75,11 +66,7 @@ const DeleteForm = ({
               className="self-end"
               type="submit"
               disabled={loading}
-              onClick={() =>
-                handleDelete(
-                  selectedChallenger?.id ? selectedChallenger.id : ""
-                )
-              }
+              onClick={handleConfirmDelete}
             >
               Yes, delete
             </Button>
