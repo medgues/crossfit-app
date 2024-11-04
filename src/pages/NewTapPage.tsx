@@ -3,40 +3,12 @@ import background from "@/assets/background.svg";
 import { Flex, Image, Text } from "@mantine/core";
 import whiteLogo from "@/assets/white-logo.svg";
 import leaderBoard from "@/assets/Leaderboard.svg";
-import CustomTable, { Column } from "@/components/CustomTable/CustomTable";
 import { useAppSelector } from "@/state/redux-hooks";
-import { useState } from "react";
 
 const NewTapPage = () => {
-  const [currentPage, setCurrentPage] = useState<number>(1);
-
-  const [itemsPerPage] = useState<number>(10);
-
-  const [selection, setSelection] = useState<string[]>([]);
-
-  const { challengersList, total } = useAppSelector(
+  const { challengersList } = useAppSelector(
     (state) => state.challengers || []
   );
-  const [loading, setLoading] = useState<boolean>(false);
-  const columns: Column<any>[] = [
-    {
-      Header: "full name",
-      accessor: "name",
-    },
-
-    {
-      Header: "Stats",
-      accessor: "states",
-      render: (_data, row) => {
-        return (
-          <div className="text-sm text-gray-600">
-            E1: {row.E1}kg · E2: {row.E2}kg · E3: {row.E3}kg · E4: {row.E4}kg ·
-            E5: {row.E5}kg · E6: {row.E6}kg
-          </div>
-        );
-      },
-    },
-  ];
 
   return (
     <div
