@@ -206,13 +206,18 @@ const Teams = () => {
           open();
         }}
         title={"CHALLENGERS"}
-        buttonVariant="primary"
         buttonLablel={"Add Team"}
         placeholder={"Search"}
         type="search"
         inputIcon="SearchNormal1"
         onStopTyping={debouncedSearch}
         width="2.5rem"
+        buttonVariant="gradient"
+        gradient={{ from: "#0083AA", to: "#5FA69B", deg: 90 }}
+        buttonIcon={
+          <Iconsax name="AddSquare" size={24} color="#fff" variant="Bold" />
+        }
+        number={total}
       />
       <Flex justify="space-evenly" align="center" gap="md" className="w-full">
         <CustomTable

@@ -34,7 +34,7 @@ app.commandLine.appendSwitch("ignore-certificate-errors");
 
 function createWindow() {
   win = new BrowserWindow({
-    icon: path.join(process.env.VITE_PUBLIC, "logo.png"),
+    icon: path.join(process.env.VITE_PUBLIC, "logo.ico"),
     autoHideMenuBar: true,
     webPreferences: {
       preload: path.join(__dirname, "preload.mjs"),

@@ -211,7 +211,7 @@ export const ReqTeamsLastPatch =
 export const ReqAddTeam =
   (team: TeamType) => async (dispatch: Dispatch, getState: any) =>
     new Promise((resolve, reject) => {
-      const teamNumberRef = doc(db, "teamsNumber", "teams_counter");
+      const teamNumberRef = doc(db, "teamsNumber", "NqyF3womle7Vhwd5EsKX");
       const total = getState().teams.total;
 
       addDoc(collection(db, "teams"), {

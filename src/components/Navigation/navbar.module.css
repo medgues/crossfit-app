@@ -73,11 +73,11 @@
   &[data-active] {
     &,
     &:hover {
-      color: var(--mantine-color-blue-4);
+      color: #0083aa;
       border-bottom: 4px red solid;
 
       .linkIcon {
-        color: var(--mantine-color-blue-4);
+        color: #0083aa;
       }
     }
   }
@@ -98,22 +98,22 @@
   cursor: pointer;
 
   @mixin hover {
-    background-color: var(--mantine-color-blue-5);
-    color: var(--mantine-color-blue-4);
+    background-color: #0083aa;
+    color: #0083aa;
 
     .linkIcon {
-      color: var(--mantine-color-blue-4);
+      color: #0083aa;
     }
   }
 
   &[data-active] {
     &,
     &:hover {
-      background-color: var(--mantine-color-blue-5);
-      color: var(--mantine-color-blue-4);
+      background-color: #0083aa;
+      color: #0083aa;
 
       .linkIcon {
-        color: var(--mantine-color-blue-4);
+        color: #0083aa;
       }
     }
   }

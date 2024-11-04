@@ -94,9 +94,9 @@ const CustomTable = <T extends Data>({
     return (
       <Table.Tr
         key={String(row.id)}
-        className={cx(classes.rowBg, {
+        className={`${cx(classes.rowBg, {
           [classes.selectedRow]: selected,
-        })}
+        })} hover:bg-[rgba(4,133,170,0.2)]`}
         // onClick={() => toggleRow(String(row.id))}
       >
         {columns.map((column, idx) => {
@@ -119,9 +119,11 @@ const CustomTable = <T extends Data>({
             >
               <CustomCheckBox
                 label={
-                  <p className="text-lg	">{String(row[column.accessor])}</p>
+                  <p className="text-lg leading-4">
+                    {String(row[column.accessor])}
+                  </p>
                 }
-                size="md"
+                size="xs"
                 radius="xs"
                 fw={400}
                 checked={selected}
@@ -147,10 +149,10 @@ const CustomTable = <T extends Data>({
           }}
         />
         <Table
-          withTableBorder
+          // withTableBorder
           borderColor={colors.neutral_N300}
           highlightOnHoverColor={colors.blue_b50}
-          withRowBorders={false}
+          // withRowBorders={false}
           highlightOnHover
           w="100%"
         >
@@ -159,7 +161,10 @@ const CustomTable = <T extends Data>({
               {columns.map((column, i) => {
                 if (i > 0) {
                   return (
-                    <Table.Th key={String(column.accessor)}>
+                    <Table.Th
+                      key={String(column.accessor)}
+                      className="bg-[#F7FAFC]"
+                    >
                       <Text size="xs" fw={600}>
                         {column.Header.toUpperCase()}
                       </Text>
@@ -170,7 +175,7 @@ const CustomTable = <T extends Data>({
                   <Table.Th
                     key={String(column.accessor)}
                     p="lg"
-                    className="header"
+                    className="header bg-[#F7FAFC]"
                   >
                     <CustomCheckBox
                       onChange={toggleAll}

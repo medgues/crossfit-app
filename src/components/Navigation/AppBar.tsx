@@ -50,12 +50,17 @@ const AppBar: FC = () => {
 
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const [active, setActive] = useState(pathname);
+  const [active, setActive] = useState(ROUTE_CHALLENGERS);
 
   const links = data.map((item) => (
     <a
       className={item.label ? classes.linkOpen : classes.linkClose}
-      data-active={item.label === active || item.link === pathname || undefined}
+      data-active={
+        item.label === active ||
+        item.link === pathname ||
+        item.link === "/" ||
+        undefined
+      }
       key={item.label}
       onClick={(event) => {
         event.preventDefault();
@@ -102,12 +107,19 @@ const AppBar: FC = () => {
       </Flex>
       <TimerControle />
       <Button
-        variant="primary"
         component="a"
         target="_blank"
         rel="noopener noreferrer"
+        variant="gradient"
+        w="20%"
+        gradient={{ from: "#0083AA", to: "#5FA69B", deg: 90 }}
       >
-        <Link to={ROUTE_SCOREBOARD} target="_blank" rel="noopener noreferrer">
+        <Link
+          to={ROUTE_SCOREBOARD}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-white hover:text-white"
+        >
           Open scoreboard
         </Link>
       </Button>

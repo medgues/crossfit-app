@@ -12,12 +12,12 @@ const createTimerThunk = (
 };
 export type initialStateType = typeof initialState;
 const initialSegments: segments = [
-  { duration: 600, color: "bg-blue-500", label: "10 min" },
-  { duration: 180, color: "bg-gray-800", label: "3 min" },
-  { duration: 600, color: "bg-blue-500", label: "10 min" },
-  { duration: 180, color: "bg-gray-800", label: "3 min" },
-  { duration: 600, color: "bg-blue-500", label: "10 min" },
-  { duration: 180, color: "bg-gray-800", label: "3 min" },
+  { duration: 600, color: "bg-[#0083aa]", label: "10 min" },
+  { duration: 180, color: "bg-[#5FA69B]", label: "3 min" },
+  { duration: 600, color: "bg-[#0083aa]", label: "10 min" },
+  { duration: 180, color: "bg-[#5FA69B]", label: "3 min" },
+  { duration: 600, color: "bg-[#0083aa]", label: "10 min" },
+  { duration: 180, color: "bg-[#5FA69B]", label: "3 min" },
 ];
 
 const initialTotalTime = initialSegments.reduce(

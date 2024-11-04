@@ -97,7 +97,7 @@ const TimerBar = () => {
                   segment.color
                 } flex items-center justify-center z-10  ${
                   index !== 0 ? "border-b" : ""
-                }  border-slate-900`}
+                }  border-[rgba(247,118,100,0.12)]`}
                 style={{
                   height: `${getSegmentHeight(segment.duration)}%`,
                   bottom: `${segments
@@ -119,12 +119,12 @@ const TimerBar = () => {
             ))}
           </div>
           <div className="w-2 h-96 relative">
-            <div className="absolute top-0 bottom-0 left-1/4 w-0.5 bg-gray-300" />
+            <div className="absolute top-0 bottom-0 left-2/3 w-0.5 bg-[rgba(247,118,100,0.4)]" />
             <div
               className="absolute left-0 w-full h-16 flex items-center justify-start transition-all duration-1000"
               style={{ top: getArrowPosition(), transform: "translateY(-50%)" }}
             >
-              <div className="w-0 h-0 border-t-[16px] border-t-transparent border-b-[16px] border-b-transparent border-r-[16px] border-r-red-500" />
+              <div className="w-0 h-0 border-t-[16px] border-t-transparent border-b-[16px] border-b-transparent border-r-[16px] border-r-[rgba(247,118,100,1)]" />
             </div>
           </div>
         </div>
