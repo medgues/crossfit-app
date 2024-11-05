@@ -1,11 +1,12 @@
 import { Button, Flex, Image } from "@mantine/core";
 import { FC, useState } from "react";
-import Iconsax from "../Iconsax";
 import logo from "../../assets/logo.png";
 import {
   ROUTE_CHALLENGERS,
   ROUTE_SCOREBOARD,
   ROUTE_TEAMS,
+  ROUTE_TIMER,
+  ROUTE_TIMERDISPLAY,
 } from "../config/constants";
 import classes from "./navbar.module.css";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -22,29 +23,25 @@ const AppBar: FC = () => {
       id: 1,
       label: "CHALLENGERS",
       link: ROUTE_CHALLENGERS,
-      icon: (
-        <Iconsax
-          size={20}
-          color="#697D8C"
-          variant="Bold"
-          name="Lock"
-          className={classes.linkIcon}
-        />
-      ),
+      // icon: (
+      //   <Iconsax
+      //     size={20}
+      //     color="#697D8C"
+      //     variant="Bold"
+      //     name="Lock"
+      //     className={classes.linkIcon}
+      //   />
+      // ),
     },
     {
       id: 2,
       label: "TEAMS",
       link: ROUTE_TEAMS,
-      icon: (
-        <Iconsax
-          size={20}
-          color="#697D8C"
-          variant="Bold"
-          name="Profile2User"
-          className={classes.linkIcon}
-        />
-      ),
+    },
+    {
+      id: 2,
+      label: "TIMER",
+      link: ROUTE_TIMER,
     },
   ];
 
@@ -121,6 +118,23 @@ const AppBar: FC = () => {
           className="text-white hover:text-white"
         >
           Open scoreboard
+        </Link>
+      </Button>
+      <Button
+        component="a"
+        target="_blank"
+        rel="noopener noreferrer"
+        variant="gradient"
+        w="20%"
+        gradient={{ from: "#0083AA", to: "#5FA69B", deg: 90 }}
+      >
+        <Link
+          to={ROUTE_TIMERDISPLAY}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-white hover:text-white"
+        >
+          Open Timer Display
         </Link>
       </Button>
     </Flex>

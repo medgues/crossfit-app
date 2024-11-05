@@ -29,7 +29,7 @@ const initialCurrentSegment = initialSegments.length - 1;
 
 const initialSegmentTime = initialSegments[initialSegments.length - 1].duration;
 // eslint-disable-next-line no-shadow
-type segment = { duration: number; color: string; label: string };
+export type segment = { duration: number; color: string; label: string };
 type segments = segment[];
 export const initialState = {
   segments: initialSegments,
@@ -60,6 +60,15 @@ const TimerSlice = createSlice({
       state.segmentTime = action.payload;
     },
 
+    setSegmentsObject: (state, action) => {
+      console.log("segmentTime payloyad", action.payload);
+      state.segments = action.payload;
+    },
+    setTotalTime: (state, action) => {
+      console.log("total time setter", action.payload);
+      state.totalTime = action.payload;
+    },
+
     ResetTimer: () => initialState,
   },
 });
@@ -70,6 +79,8 @@ export const {
   setCurrentSegment,
   setSegmentTime,
   ResetTimer,
+  setSegmentsObject,
+  setTotalTime,
 } = TimerSlice.actions;
 
 export const startTimer = createTimerThunk((dispatch) => {
@@ -131,5 +142,9 @@ export const nextTimer = createTimerThunk((dispatch, getState) => {
   dispatch(resetCurrentTimer() as any); // This will call the thunk
   dispatch(setTimerStatus("pause"));
 });
+
+// export const setSegmentsObject = createTimerThunk((dispatch) => {
+
+// });
 
 export default TimerSlice.reducer;

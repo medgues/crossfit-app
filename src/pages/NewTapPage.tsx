@@ -1,4 +1,3 @@
-import TimerBar from "@/components/ui/timerUi/TimerBar";
 import background from "@/assets/background.svg";
 import { Flex, Image, Text } from "@mantine/core";
 import whiteLogo from "@/assets/white-logo.svg";
@@ -79,7 +78,7 @@ const NewTapPage = () => {
           /> */}
             </Flex>
           </Flex>
-          <TimerBar />
+          {/* <TimerBar /> */}
         </Flex>
       </Flex>
     </div>

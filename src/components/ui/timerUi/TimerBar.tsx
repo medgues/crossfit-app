@@ -2,12 +2,13 @@ import {
   setCurrentSegment,
   setRemainingTime,
   setSegmentTime,
+  setTimerStatus,
 } from "@/state/reducers/timer";
 import { useAppSelector } from "@/state/redux-hooks";
 import { useAppDispatch } from "@/state/redux-hooks";
 import { useEffect } from "react";
 
-const TimerBar = () => {
+const TimerBar = ({ className }: { className: string }) => {
   const {
     currentSegment,
     segments,
@@ -20,7 +21,10 @@ const TimerBar = () => {
 
   useEffect(() => {
     if (timerStatus === "pause") return;
-
+    if (currentSegment === 0 && segmentTime === 0) {
+      dispatch(setTimerStatus("pause"));
+      return;
+    }
     if (timerStatus === "running") {
       const timer = setInterval(() => {
         // Handle remaining time
@@ -32,12 +36,22 @@ const TimerBar = () => {
         }
 
         // Handle segment time
-        if (segmentTime <= 1) {
-          const nextSegment = (currentSegment - 1) % segments.length;
-          dispatch(setCurrentSegment(nextSegment));
-          dispatch(setSegmentTime(segments[nextSegment].duration));
+        if (currentSegment !== 0) {
+          if (segmentTime <= 1) {
+            const nextSegment = (currentSegment - 1) % segments.length;
+            dispatch(setCurrentSegment(nextSegment));
+            dispatch(setSegmentTime(segments[nextSegment].duration));
+          } else {
+            dispatch(setSegmentTime(segmentTime - 1));
+          }
         } else {
-          dispatch(setSegmentTime(segmentTime - 1));
+          if (segmentTime <= 0) {
+            const nextSegment = (currentSegment - 1) % segments.length;
+            dispatch(setCurrentSegment(nextSegment));
+            dispatch(setSegmentTime(segments[nextSegment].duration));
+          } else {
+            dispatch(setSegmentTime(segmentTime - 1));
+          }
         }
       }, 1000);
 
@@ -85,31 +99,31 @@ const TimerBar = () => {
   };
 
   return (
-    <div className="flex justify-center items-center">
+    <div className={`flex justify-center items-center ${className}`}>
       <div className="flex flex-col items-center justify-center ">
         <div className="relative flex items-center">
           <div className="w-12 h-96 bg-gray-200 rounded-lg overflow-hidden relative">
-            {segments.map((segment, index) => (
+            {segments?.map((segment, index) => (
               <div
                 key={index}
                 id={`index-${index}`}
                 className={`absolute left-0 right-0 ${
-                  segment.color
+                  segment?.color
                 } flex items-center justify-center z-10  ${
                   index !== 0 ? "border-b" : ""
                 }  border-[rgba(247,118,100,0.12)]`}
                 style={{
-                  height: `${getSegmentHeight(segment.duration)}%`,
+                  height: `${getSegmentHeight(segment?.duration)}%`,
                   bottom: `${segments
                     .slice(0, index)
                     .reduce(
-                      (acc, seg) => acc + getSegmentHeight(seg.duration),
+                      (acc, seg) => acc + getSegmentHeight(seg?.duration),
                       0
                     )}%`,
                 }}
               >
                 <span className="text-xs font-semibold text-white z-30">
-                  {segment.label}
+                  {segment?.label}
                 </span>
                 <div
                   className="absolute top-0 left-0 right-0 bg-gray-400 transition-all duration-1000 "

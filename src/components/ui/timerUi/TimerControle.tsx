@@ -7,10 +7,15 @@ import {
   pauseTimer,
   nextTimer,
 } from "@/state/reducers/timer";
-import { useAppDispatch } from "@/state/redux-hooks";
+import { useAppDispatch, useAppSelector } from "@/state/redux-hooks";
 import { Button } from "@mantine/core";
 const TimerControle = () => {
-  //   const state = useAppSelector((state) => state.timer);
+  const { segmentTime } = useAppSelector((state) => state.timer);
+  const formatTime = (seconds: number) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes}:${remainingSeconds.toString().padStart(2, "0")}`;
+  };
   const dispatch = useAppDispatch();
 
   return (
@@ -54,6 +59,7 @@ const TimerControle = () => {
         {" "}
         <Iconsax name="Next" size={20} color="#fff" variant="Bold" />
       </Button>
+      <div className="text-2xl font-semibold">{formatTime(segmentTime)}</div>
     </div>
   );
 };

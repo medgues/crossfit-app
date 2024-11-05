@@ -249,7 +249,7 @@ const Challengers = () => {
           selection={selection}
           setSelection={setSelection}
         />
-        <TimerBar />
+        {/* <TimerBar /> */}
       </Flex>
 
       <Modal.Root
