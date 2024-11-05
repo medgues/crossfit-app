@@ -22,12 +22,12 @@ import {
   limitToLast,
 } from "firebase/firestore/lite";
 // eslint-disable-next-line no-shadow
-
+export type nationalityType = { code: string; name: string };
 export type ChallengersType = {
   id?: string;
   name: string;
   avatar: string;
-  nationality: string;
+  nationality: nationalityType;
   category: string;
   division: string;
   heatNo: string;

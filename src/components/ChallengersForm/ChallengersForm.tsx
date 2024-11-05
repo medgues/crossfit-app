@@ -5,14 +5,31 @@ import colors from "../config/colors";
 import CustomSelect from "../CustomSelect";
 import {
   ChallengersType,
+  // ChallengersType,
   ReqAddChallenger,
   ReqUpdateChallenger,
 } from "@/state/reducers/challengers";
 import { useForm, UseFormReturnType } from "@mantine/form";
 import CustomTextInput from "../CustomTextInput/CustomTextInput";
 import { useAppDispatch } from "@/state/redux-hooks";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CustomNumberInput from "../CustomNumberInput";
+
+export type newChallengerType = {
+  id?: string;
+  name: string;
+  avatar: string;
+  nationality: string;
+  category: string;
+  division: string;
+  heatNo: string;
+  E1?: string;
+  E2?: string;
+  E3?: string;
+  E4?: string;
+  E5?: string;
+  E6?: string;
+};
 
 export type ChallengersFromType = {
   close: () => void;
@@ -20,6 +37,16 @@ export type ChallengersFromType = {
   selectedChallenger?: ChallengersType;
   setCurrentPage?: (page: number) => void;
 };
+const nationalities = [
+  { code: "DZ", label: "Algerian", value: "Algerian" },
+  { code: "EGY", label: "Egyptian", value: "Egyptian" },
+  { code: "LY", label: "Lybian", value: "Lybian" },
+  { code: "PS", label: "Plestinian", value: "Plestinian" },
+  { code: "KW", label: "Kuwaiti", value: "Kuwaiti" },
+  { code: "FR", label: "French", value: "French" },
+  { code: "CZ", label: "Czech", value: "Czech" },
+  { code: "PT", label: "Portuguese", value: "Portuguese" },
+];
 
 const ChallengersForm = ({
   close,
@@ -28,22 +55,24 @@ const ChallengersForm = ({
 }: ChallengersFromType) => {
   const dispatch = useAppDispatch();
 
-  const form: UseFormReturnType<ChallengersType> = useForm<ChallengersType>({
-    initialValues: {
-      name: selectedChallenger?.name || "",
-      avatar: selectedChallenger?.avatar || "",
-      nationality: selectedChallenger?.nationality || "",
-      category: selectedChallenger?.category || "",
-      division: selectedChallenger?.division || "",
-      heatNo: selectedChallenger?.heatNo || "-",
-      E1: selectedChallenger?.E1 || "-",
-      E2: selectedChallenger?.E2 || "-",
-      E3: selectedChallenger?.E3 || "-",
-      E4: selectedChallenger?.E4 || "-",
-      E5: selectedChallenger?.E5 || "-",
-      E6: selectedChallenger?.E6 || "-",
-    },
-  });
+  const form: UseFormReturnType<newChallengerType> = useForm<newChallengerType>(
+    {
+      initialValues: {
+        name: selectedChallenger?.name || "",
+        avatar: selectedChallenger?.avatar || "",
+        nationality: selectedChallenger?.nationality.name || "",
+        category: selectedChallenger?.category || "",
+        division: selectedChallenger?.division || "",
+        heatNo: selectedChallenger?.heatNo || "-",
+        E1: selectedChallenger?.E1 || "-",
+        E2: selectedChallenger?.E2 || "-",
+        E3: selectedChallenger?.E3 || "-",
+        E4: selectedChallenger?.E4 || "-",
+        E5: selectedChallenger?.E5 || "-",
+        E6: selectedChallenger?.E6 || "-",
+      },
+    }
+  );
 
   const [loading, setLoading] = useState(false);
 
@@ -102,10 +131,19 @@ const ChallengersForm = ({
       label: "female +45",
     },
   ];
-  const addChallenger = async (values: ChallengersType) => {
+  const addChallenger = async (values: newChallengerType) => {
+    const newValues = {
+      ...values,
+      nationality: {
+        code: nationalities.filter((na) => na.value === values.nationality)[0]
+          .code,
+        name: nationalities.filter((na) => na.value === values.nationality)[0]
+          .value,
+      },
+    };
     setLoading(true);
     try {
-      await dispatch(ReqAddChallenger(values) as any);
+      await dispatch(ReqAddChallenger(newValues) as any);
       form.reset();
       close();
     } finally {
@@ -114,23 +152,44 @@ const ChallengersForm = ({
   };
 
   const updateChallenger = async (values: ChallengersType) => {
-    console.log("pdate values", values);
+    const newValues = {
+      ...values,
+      nationality: {
+        code: nationalities.filter(
+          (na) => na.value === values.nationality.name
+        )[0].code,
+        name: nationalities.filter(
+          (na) => na.value === values.nationality.name
+        )[0].value,
+      },
+    };
+    console.log("pdate values", newValues);
     setLoading(true);
     try {
       if (!selectedChallenger?.id) {
         throw new Error("No challenger ID found");
       }
-      await dispatch(ReqUpdateChallenger(selectedChallenger.id, values) as any);
-      console.log("values", values);
+      await dispatch(
+        ReqUpdateChallenger(selectedChallenger.id, newValues) as any
+      );
+      console.log("values", newValues);
       form.reset();
       close();
     } finally {
       setLoading(false);
     }
   };
+  useEffect(() => {
+    console.log(form.values);
+  }, [form.values]);
 
-  const handleFormSubmit =
-    formToShow === "add" ? addChallenger : updateChallenger;
+  const handleFormSubmit = (values: newChallengerType | ChallengersType) => {
+    if (formToShow === "add") {
+      addChallenger(values as newChallengerType);
+    } else {
+      updateChallenger(values as ChallengersType);
+    }
+  };
 
   return (
     <Modal.Content className="left-0 bottom-0">
@@ -186,12 +245,13 @@ const ChallengersForm = ({
                   label="Full name"
                   {...form.getInputProps("name")}
                 />
-                <CustomTextInput
+                <CustomSelect
                   size="lg"
                   w="100%"
                   disabled={loading}
                   placeholder="Name"
                   label="Nationality"
+                  selectdata={nationalities}
                   {...form.getInputProps("nationality")}
                 />
               </Flex>

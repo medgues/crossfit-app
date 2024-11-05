@@ -9,12 +9,14 @@ import {
 } from "@mantine/core";
 import classes from "./CustomSelect.module.css";
 import colors from "../config/colors";
+import Flag from "react-world-flags";
 
 export type Transformedselectdata = {
   id?: string;
   value?: string;
   label: string;
   img?: string;
+  code?: string;
 };
 
 export type CustomSelectProps = SelectProps & {
@@ -32,29 +34,38 @@ const CustomSelect: React.FC<CustomSelectProps> = (props) => {
   }: {
     option: Transformedselectdata;
     checked?: boolean;
-  }) => (
-    <Group
-      gap="sm"
-      bg={checked ? colors.blue_b50 : ""}
-      w="100%"
-      py={12}
-      px={16}
-      style={{
-        borderRadius: "8px",
-      }}
-    >
-      {option.img && <Image src={option.img} radius="xl" h={imageHeight} />}
-      <div>
-        <Text size="md" c={checked ? colors.blue_b400 : ""} className="h500">
-          {option.label}
-        </Text>
-        {/* secondary text under the select label */}
-        {/* <Text size="xs" opacity={0.5}>
-    {option.email}
-  </Text> */}
-      </div>
-    </Group>
-  );
+  }) => {
+    return (
+      <Group
+        gap="sm"
+        bg={checked ? colors.blue_b50 : ""}
+        w="100%"
+        py={12}
+        px={16}
+        style={{
+          borderRadius: "8px",
+        }}
+      >
+        {option.img && <Image src={option.img} radius="xl" h={imageHeight} />}
+        {option.code && (
+          <Flag
+            code={option.code}
+            fallback={<span>Unknown</span>}
+            className="w-[50px]"
+          />
+        )}
+        <div>
+          <Text size="md" c={checked ? colors.blue_b400 : ""} className="h500">
+            {option.label}
+          </Text>
+          {/* secondary text under the select label */}
+          {/* <Text size="xs" opacity={0.5}>
+      {option.email}
+    </Text> */}
+        </div>
+      </Group>
+    );
+  };
   // important to be finished
   return (
     <Select
