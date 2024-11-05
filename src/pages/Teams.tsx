@@ -13,7 +13,6 @@ import {
   ReqFetchChallengerFirstPatch,
   ReqFetchSearchChallengers,
 } from "@/state/reducers/challengers";
-import TimerBar from "@/components/ui/timerUi/TimerBar";
 import {
   Member,
   TeamType,
