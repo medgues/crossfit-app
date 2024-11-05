@@ -3,6 +3,7 @@ import { Flex, Image, Text } from "@mantine/core";
 import whiteLogo from "@/assets/white-logo.svg";
 import leaderBoard from "@/assets/Leaderboard.svg";
 import { useAppSelector } from "@/state/redux-hooks";
+import Flag from "react-world-flags";
 
 const NewTapPage = () => {
   const { challengersList } = useAppSelector(
@@ -41,6 +42,11 @@ const NewTapPage = () => {
               {challengersList.map((challenger) => (
                 <div className="bg-[rgba(17,17,17,0.5)] w-full h-[60px] flex flex-row items-center justify-between px-10">
                   <span className="flex flex-row items-center justify-center text-white text-lg font-semibold">
+                    <Flag
+                      code={challenger.nationality.code}
+                      fallback={<span></span>}
+                      className="w-[50px] m-0"
+                    />
                     <Text className="rounded-md text-2xl font-medium">
                       {challenger.name.substring(
                         0,
@@ -53,29 +59,48 @@ const NewTapPage = () => {
                       )}
                     </Text>
                   </span>
-                  <span className="flex flex-row items-center justify-center bg-white px-2 py-1 rounded-md text-lg font-semibold">
-                    <Text className="text-black bg-white px-2  rounded-md text-lg font-medium">
-                      210Kg
-                    </Text>
-                    |
-                    <Text className="text-black bg-white px-2 py-1 rounded-md text-lg font-bold">
-                      10:33
-                    </Text>
-                  </span>
+                  <Flex gap="md">
+                    <span className="flex flex-row items-center justify-center bg-white px-2 py-1 rounded-md text-lg font-semibold">
+                      <Text className="text-black bg-white px-2 py-1 rounded-md text-lg font-bold">
+                        {challenger.E1}
+                      </Text>
+                    </span>
+                    <span className="flex flex-row items-center justify-center bg-white px-2 py-1 rounded-md text-lg font-semibold">
+                      <Text className="text-black bg-white px-2 py-1 rounded-md text-lg font-bold">
+                        {challenger.E2}
+                      </Text>
+                    </span>
+                    {challenger.E3 && (
+                      <span className="flex flex-row items-center justify-center bg-white px-2 py-1 rounded-md text-lg font-semibold">
+                        <Text className="text-black bg-white px-2 py-1 rounded-md text-lg font-bold">
+                          {challenger.E3}
+                        </Text>
+                      </span>
+                    )}
+                    {challenger.E4 && (
+                      <span className="flex flex-row items-center justify-center bg-white px-2 py-1 rounded-md text-lg font-semibold">
+                        <Text className="text-black bg-white px-2 py-1 rounded-md text-lg font-bold">
+                          {challenger.E4}
+                        </Text>
+                      </span>
+                    )}
+                    {challenger.E5 && (
+                      <span className="flex flex-row items-center justify-center bg-white px-2 py-1 rounded-md text-lg font-semibold">
+                        <Text className="text-black bg-white px-2 py-1 rounded-md text-lg font-bold">
+                          {challenger.E5}
+                        </Text>
+                      </span>
+                    )}
+                    {challenger.E6 && (
+                      <span className="flex flex-row items-center justify-center bg-white px-2 py-1 rounded-md text-lg font-semibold">
+                        <Text className="text-black bg-white px-2 py-1 rounded-md text-lg font-bold">
+                          {challenger.E6}
+                        </Text>
+                      </span>
+                    )}
+                  </Flex>
                 </div>
               ))}
-              {/* <CustomTable
-            renderPage="scoreboard"
-            columns={columns}
-            data={challengersList}
-            loading={loading}
-            total={total}
-            currentPage={currentPage}
-            setCurrentPage={setCurrentPage}
-            itemsPerPage={itemsPerPage}
-            selection={selection}
-            setSelection={setSelection}
-          /> */}
             </Flex>
           </Flex>
           {/* <TimerBar /> */}

@@ -3,7 +3,7 @@
 import CustomTable, { Column } from "@/components/CustomTable/CustomTable";
 import Iconsax from "@/components/Iconsax";
 import SecondaryAppBar from "@/components/Navigation/SecondaryAppBar";
-import { Flex, Modal } from "@mantine/core";
+import { Flex, Group, Modal, Text } from "@mantine/core";
 import { useCallback, useEffect, useState } from "react";
 import { debounce } from "lodash";
 import { useDisclosure } from "@mantine/hooks";
@@ -12,13 +12,14 @@ import { useAppDispatch, useAppSelector } from "@/state/redux-hooks";
 import DeleteForm from "@/components/DeleteForm/DeleteForm";
 import {
   ChallengersType,
+  nationalityType,
   ReqChallengerLastPatch,
   ReqChallengersNextPatch,
   ReqDeleteChallenger,
   ReqFetchChallengerFirstPatch,
   ReqFetchSearchChallengers,
 } from "@/state/reducers/challengers";
-import TimerBar from "@/components/ui/timerUi/TimerBar";
+import Flag from "react-world-flags";
 
 const Challengers = () => {
   const dispatch = useAppDispatch();
@@ -158,6 +159,36 @@ const Challengers = () => {
     {
       Header: "Nationality",
       accessor: "nationality",
+      render: (nationality: nationalityType) => {
+        return (
+          <Group
+            gap="sm"
+            w="100%"
+            py={12}
+            px={16}
+            style={{
+              borderRadius: "8px",
+            }}
+          >
+            {nationality.code && (
+              <Flag
+                code={nationality.code}
+                fallback={<span>Unknown</span>}
+                className="w-[50px] m-0"
+              />
+            )}
+            <div>
+              <Text size="md" className="h500">
+                {nationality.name}
+              </Text>
+              {/* secondary text under the select label */}
+              {/* <Text size="xs" opacity={0.5}>
+      {option.email}
+    </Text> */}
+            </div>
+          </Group>
+        );
+      },
     },
     {
       Header: "Category",
